@@ -58,85 +58,102 @@ def clear():
 
 
 # ---------------- GUI ----------------
-root = tk.Tk()
-root.state("zoomed")
-root.title("SkySense Weather")
+def main():
+    global city_entry, output
 
-main_frame = tk.Frame(root, bg="#F2F4F8")
-main_frame.pack(fill="both", expand=True)
+    root = tk.Tk()
+    root.title("SkySense Weather")
+    root.state("zoomed")
+    root.configure(bg="#F8FAFC")
 
-tk.Label(
-    main_frame,
-    text="SkySense Weather",
-    font=("Segoe UI Semibold", 52),
-    fg="#1F2937",
-    bg="#F2F4F8"
-).pack(pady=30)
+    # OPTIONAL (if you add icon.ico)
+    # root.iconbitmap("icon.ico")
 
-tk.Frame(main_frame, height=2, bg="black").pack(fill="x", pady=10)
+    main_frame = tk.Frame(root, bg="#F8FAFC")
+    main_frame.pack(fill="both", expand=True)
 
-# Input
-input_frame = tk.Frame(main_frame, bg="#E5E7EB", padx=25, pady=20)
-input_frame.pack(pady=20)
+    tk.Label(
+        main_frame,
+        text="SkySense Weather",
+        font=("Segoe UI Variable", 48, "bold"),
+        fg="#0F172A",
+        bg="#F8FAFC"
+    ).pack(pady=(30, 10))
 
-tk.Label(
-    input_frame,
-    text="Enter city name",
-    font=("Segoe UI", 20),
-    bg="#E5E7EB"
-).pack(side=tk.LEFT, padx=(0, 15))
+    tk.Frame(main_frame, height=2, bg="#CBD5E1").pack(fill="x", padx=200, pady=10)
 
-city_entry = tk.Entry(
-    input_frame,
-    font=("Segoe UI", 20),
-    width=24,
-    bd=0
-)
-city_entry.pack(side=tk.LEFT)
+    input_frame = tk.Frame(main_frame, bg="white", padx=30, pady=25)
+    input_frame.pack(pady=25)
 
-# ---------- BUTTON FRAME (ABOVE OUTPUT) ----------
-button_frame = tk.Frame(main_frame, bg="#F2F4F8")
-button_frame.pack(pady=25)
+    tk.Label(
+        input_frame,
+        text="Enter city name",
+        font=("Segoe UI Semibold", 18),
+        bg="white",
+        fg="#1E293B"
+    ).pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Button(
-    button_frame,
-    text="Get Current Weather",
-    font=("Segoe UI Semibold", 18),
-    bg="#3B82F6",
-    fg="white",
-    bd=0,
-    padx=40,
-    pady=12,
-    cursor="hand2",
-    command=get_weather
-).pack(side=tk.LEFT, padx=20)
+    city_entry = tk.Entry(
+        input_frame,
+        font=("Segoe UI", 18),
+        width=26,
+        bd=0,
+        bg="#F1F5F9",
+        fg="#0F172A",
+        insertbackground="#0F172A"
+    )
+    city_entry.pack(side=tk.LEFT, ipady=8)
 
-tk.Button(
-    button_frame,
-    text="Clear Forecast Box",
-    font=("Segoe UI Semibold", 18),
-    bg="#EF4444",
-    fg="white",
-    bd=0,
-    padx=40,
-    pady=12,
-    cursor="hand2",
-    command=clear
-).pack(side=tk.LEFT, padx=20)
+    button_frame = tk.Frame(main_frame, bg="#F8FAFC")
+    button_frame.pack(pady=25)
 
-# ---------- OUTPUT ----------
-prediction_frame = tk.Frame(main_frame, bg="white")
-prediction_frame.pack(pady=30)
+    tk.Button(
+        button_frame,
+        text="🌤 Get Current Weather",
+        font=("Segoe UI Semibold", 16),
+        bg="#2563EB",
+        fg="white",
+        bd=0,
+        padx=36,
+        pady=12,
+        cursor="hand2",
+        activebackground="#1D4ED8",
+        command=get_weather
+    ).pack(side=tk.LEFT, padx=16)
 
-output = tk.Text(
-    prediction_frame,
-    height=10,
-    width=100,
-    font=("Segoe UI", 16),
-    bg="white",
-    bd=0
-)
-output.pack(pady=20)
-output.configure(state="disabled")
+    tk.Button(
+        button_frame,
+        text="🧹 Clear Forecast Box",
+        font=("Segoe UI Semibold", 16),
+        bg="#EF4444",
+        fg="white",
+        bd=0,
+        padx=36,
+        pady=12,
+        cursor="hand2",
+        activebackground="#DC2626",
+        command=clear
+    ).pack(side=tk.LEFT, padx=16)
 
-root.mainloop()
+    prediction_frame = tk.Frame(main_frame, bg="white", padx=40, pady=30)
+    prediction_frame.pack(pady=30)
+
+    output = tk.Text(
+        prediction_frame,
+        height=9,
+        width=80,
+        font=("Segoe UI", 16),
+        bg="white",
+        fg="#0F172A",
+        bd=0,
+        wrap="word"
+    )
+    output.pack()
+    output.configure(state="disabled")
+
+    root.mainloop()
+
+
+# ✅ REQUIRED FOR APP BUILD
+if __name__ == "__main__":
+    main()
