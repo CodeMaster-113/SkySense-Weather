@@ -12,7 +12,6 @@ def get_weather():
     output.delete("1.0", tk.END)
 
     try:
-        # --- Geocoding ---
         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}"
         geo_data = requests.get(geo_url).json()
 
@@ -24,7 +23,6 @@ def get_weather():
         lat = geo_data["results"][0]["latitude"]
         lon = geo_data["results"][0]["longitude"]
 
-        # --- Weather ---
         weather_url = (
             f"https://api.open-meteo.com/v1/forecast?"
             f"latitude={lat}&longitude={lon}"
@@ -40,9 +38,8 @@ def get_weather():
         precip = weather_data.get("hourly", {}).get("precipitation_probability", [])
         precip_chance = f"{precip[0]}%" if precip else "N/A"
 
-        # --- Output ---
         output.insert(tk.END, f"📍 City: {city}\n")
-        output.insert(tk.END, f" Lattitude: {round(lat,3)} , longitude: {round(lon,3)}\n\n")
+        output.insert(tk.END, f"📌 Latitude: {round(lat,3)}, Longitude: {round(lon,3)}\n\n")
         output.insert(tk.END, f"🌡 Temperature: {temp} °C\n")
         output.insert(tk.END, f"💨 Wind Speed: {wind} km/h\n")
         output.insert(tk.END, f"🧭 Wind Direction: {wind_dir}°\n")
@@ -52,6 +49,12 @@ def get_weather():
         output.insert(tk.END, f"Error fetching data ❌\n{e}")
 
     output.configure(state="disabled")
+
+def clear():
+    output.configure(state="normal")
+    output.delete("1.0", tk.END)
+    output.configure(state="disabled")
+    city_entry.delete(0, tk.END)
 
 
 # ---------------- GUI ----------------
@@ -91,21 +94,37 @@ city_entry = tk.Entry(
 )
 city_entry.pack(side=tk.LEFT)
 
-# Button
+# ---------- BUTTON FRAME (ABOVE OUTPUT) ----------
+button_frame = tk.Frame(main_frame, bg="#F2F4F8")
+button_frame.pack(pady=25)
+
 tk.Button(
-    main_frame,
+    button_frame,
     text="Get Current Weather",
     font=("Segoe UI Semibold", 18),
     bg="#3B82F6",
     fg="white",
     bd=0,
-    padx=30,
+    padx=40,
     pady=12,
     cursor="hand2",
     command=get_weather
-).pack(pady=30)
+).pack(side=tk.LEFT, padx=20)
 
-# Output box
+tk.Button(
+    button_frame,
+    text="Clear Forecast Box",
+    font=("Segoe UI Semibold", 18),
+    bg="#EF4444",
+    fg="white",
+    bd=0,
+    padx=40,
+    pady=12,
+    cursor="hand2",
+    command=clear
+).pack(side=tk.LEFT, padx=20)
+
+# ---------- OUTPUT ----------
 prediction_frame = tk.Frame(main_frame, bg="white")
 prediction_frame.pack(pady=30)
 
@@ -121,4 +140,3 @@ output.pack(pady=20)
 output.configure(state="disabled")
 
 root.mainloop()
-
